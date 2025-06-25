@@ -1,0 +1,86 @@
+{
+    "python.envFile": "${workspaceFolder}/.env",
+    "[python]": {
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      },
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.formatOnSave": true
+    },
+    "isort.args": [
+      "--profile",
+      "django",
+      "--line-length",
+      "130",
+      "--force-grid-wrap"
+    ],
+  
+    "black-formatter.args": [
+      "--skip-string-normalization",
+      "--line-length",
+      "130"
+    ],
+    "flake8.args": ["--max-line-length", "130"],
+    "terminal.integrated.env.windows": {
+      "DJANGO_SETTINGS_MODULE": "app.settings",
+      "DJANGO_CONFIGURATION": "local"
+    },
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    // "pylint.args": [
+    //   "--disable=C0111,W1203",
+    //   "--load-plugins=pylint_django",
+    //   "--max-line-length=130"
+    // ],
+    "python.testing.pytestArgs": ["-v", "${workspaceFolder}/app"],
+    "coverage-gutters.coverageReportFileName": "htmlcov/**/index.html",
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "cSpell.words": [
+      "BULSTAT",
+      "cooolbox",
+      "Counterparty",
+      "FNPXML",
+      "ITDN",
+      "msisdn",
+      "msisdns",
+      "organisation",
+      "Organisational",
+      "phonenumbers",
+      "Preconfig",
+      "preconfiguration",
+      "xprefix",
+      "zprefix"
+    ],
+    "files.exclude": {
+      "**/lib/*": false
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "terminal.integrated.scrollback": 100000,
+    "cSpell.enableFiletypes": ["!yaml"],
+    "workbench.colorCustomizations": {
+      "list.errorForeground": "#D3D3D3"
+    },
+    "search.exclude": {
+      "app/**/migrations": true,
+      "app/**/static": true
+    },
+    "search.useIgnoreFiles": true,
+    "python.analysis.autoImportCompletions": true,
+  
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.easymotion": true,
+    "editor.cursorSurroundingLines": 8,
+    "vim.leader": "<space>",
+    "vim.highlightedyank.enable": true,
+    "vim.highlightedyank.color": "#a9dc7660",
+    "vim.highlightedyank.duration": 250,
+    "extensions.experimental.affinity": {
+      "vscodevim.vim": 1
+    },
+    "cursorpyright.analysis.autoImportCompletions": true,
+    "cursorpyright.analysis.typeCheckingMode": "basic",
+  }
+  
