@@ -182,7 +182,6 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
               <div className="invoice-details-value">{issuerName}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'vat' })}</span> {issuerVAT}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'address' })}</span> {issuerAddress}</div>
-              <div className="invoice-details-value" style={{ fontSize: '0.95rem', color: 'var(--webrush-blue)' }}>{intl.formatMessage({ id: 'webrushStudio' }).toLowerCase()}.studio</div>
             </div>
           </div>
           <table className="invoice-table">
