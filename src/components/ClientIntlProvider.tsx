@@ -1,22 +1,22 @@
 "use client";
-import { NextIntlClientProvider } from 'next-intl';
 import { createContext, ReactNode, useEffect, useState } from 'react';
+import { IntlProvider } from 'react-intl';
 
 const DEFAULT_LOCALE = 'en';
 const SUPPORTED_LOCALES = ['en', 'bg'];
 
-export const LocaleContext = createContext<{ locale: string; setLocale: (locale: string) => void }>({
-  locale: DEFAULT_LOCALE,
-  setLocale: () => {},
-});
+export const LocaleContext = createContext<{ locale: string; setLocale: (locale: string) => void }>(
+  {
+    locale: DEFAULT_LOCALE,
+    setLocale: () => {},
+  }
+);
 
 export default function ClientIntlProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState(DEFAULT_LOCALE);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any>(null);
 
   useEffect(() => {
-    // Try to load locale from localStorage
     const storedLocale = localStorage.getItem('locale');
     if (storedLocale && SUPPORTED_LOCALES.includes(storedLocale)) {
       setLocale(storedLocale);
@@ -24,9 +24,7 @@ export default function ClientIntlProvider({ children }: { children: ReactNode }
   }, []);
 
   useEffect(() => {
-    // Persist locale
     localStorage.setItem('locale', locale);
-    // Dynamically import messages
     import(`../messages/${locale}.json`).then((mod) => setMessages(mod.default));
   }, [locale]);
 
@@ -34,9 +32,9 @@ export default function ClientIntlProvider({ children }: { children: ReactNode }
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale }}>
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <IntlProvider locale={locale} messages={messages} defaultLocale={DEFAULT_LOCALE}>
         {children}
-      </NextIntlClientProvider>
+      </IntlProvider>
     </LocaleContext.Provider>
   );
 } 

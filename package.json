@@ -23,6 +23,7 @@
     "nums2words-bg": "^1.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-intl": "^7.1.11",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {

@@ -14,7 +14,7 @@ interface InvoicePageProps {
 }
 
 export default async function InvoicePage({ params }: InvoicePageProps) {
-  const { invoiceId } = params;
+  const { invoiceId } = await params;
 
   if (!invoiceId) {
     notFound();

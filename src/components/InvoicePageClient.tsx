@@ -1,6 +1,5 @@
 "use client";
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-import { useTranslations } from 'next-intl';
 import InvoiceClient from './InvoiceClient';
 
 interface InvoicePageClientProps {
@@ -12,7 +11,6 @@ interface InvoicePageClientProps {
 }
 
 export default function InvoicePageClient({ invoice, lines, client }: InvoicePageClientProps) {
-  const t = useTranslations();
   return (
     <div>
       <InvoiceClient invoice={invoice} lines={lines} client={client} />

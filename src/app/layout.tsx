@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ClientIntlProvider from '../components/ClientIntlProvider';
+import ClientLayout from './client-layout';
 import "./globals.css";
 
 const inter = Inter({
@@ -21,9 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body className={`${inter.variable} ${inter.variable} antialiased`}>
-        <ClientIntlProvider>
+        <ClientLayout>
           {children}
-        </ClientIntlProvider>
+        </ClientLayout>
       </body>
     </html>
   );

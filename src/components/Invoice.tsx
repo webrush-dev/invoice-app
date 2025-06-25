@@ -3,10 +3,10 @@
 // If you want to add types, create a declaration file with: declare module 'html2pdf.js';
 
 import { GetPageResponse, PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-import { useLocale, useTranslations } from 'next-intl';
 import { toWords } from 'number-to-words';
 import nums2wordsBG from 'nums2words-bg';
 import { forwardRef } from 'react';
+import { useIntl } from 'react-intl';
 import "./Invoice.css";
 
 // Utility functions for Notion property extraction
@@ -116,10 +116,8 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
     }
 
     // For localization, wrap the label and conversion in variables
-    const t = useTranslations();
-    const currentLocale = useLocale();
-    console.log('currentLocale', currentLocale);
-    const inWordsLabel = 'In Words'; // For future translation
+    const intl = useIntl();
+    const currentLocale = intl.locale;
     let totalDueInWords = '';
     if (currentLocale === 'bg') {
       try {
@@ -160,39 +158,40 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
         </svg>
         <div className="pdf-a4-content">
           <div className="invoice-header">
-            <img src="/assets/Webrush.png" alt={t('webrushStudio')} className="invoice-logo" width={48} height={48} style={{ maxWidth: '100%', maxHeight: '100%' }} />
+            <img src="/assets/Webrush.png" alt={intl.formatMessage({ id: 'webrushStudio' })} className="invoice-logo" width={48} height={48} style={{ maxWidth: '100%', maxHeight: '100%' }} />
             <div>
               <div className="invoice-title">
-                {t('invoiceTitle')} {invoiceNumber}
+                {intl.formatMessage({ id: 'invoiceTitle' })} {invoiceNumber}
                 <span className="invoice-title-underline" />
               </div>
               {/* <div className="invoice-status">Status: {status}</div> */}
-              <div className="invoice-agency">{t('webrushStudio')}</div>
+              <div className="invoice-agency">{intl.formatMessage({ id: 'webrushStudio' })}</div>
             </div>
           </div>
           <div className="invoice-details-row">
             {/* Issued To (Client) */}
             <div className="invoice-details-block" style={{ minWidth: 200 }}>
-              <div className="invoice-details-label">{t('issuedTo')}</div>
+              <div className="invoice-details-label">{intl.formatMessage({ id: 'issuedTo' })}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}></span> {clientName}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('vat')}</span> {clientVAT}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('address')}</span> {clientAddress}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'vat' })}</span> {clientVAT}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'address' })}</span> {clientAddress}</div>
             </div>
             {/* Issued By (Agency) */}
             <div className="invoice-details-block" style={{ textAlign: 'right' }}>
-              <div className="invoice-details-label">{t('issuedBy')}</div>
+              <div className="invoice-details-label">{intl.formatMessage({ id: 'issuedBy' })}</div>
               <div className="invoice-details-value">{issuerName}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('vat')}</span> {issuerVAT}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('address')}</span> {issuerAddress}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'vat' })}</span> {issuerVAT}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'address' })}</span> {issuerAddress}</div>
+              <div className="invoice-details-value" style={{ fontSize: '0.95rem', color: 'var(--webrush-blue)' }}>{intl.formatMessage({ id: 'webrushStudio' }).toLowerCase()}.studio</div>
             </div>
           </div>
           <table className="invoice-table">
             <thead>
               <tr>
-                <th>{t('description')}</th>
-                <th>{t('qty')}</th>
-                <th>{t('unitPrice')}</th>
-                <th>{t('netAmount')}</th>
+                <th>{intl.formatMessage({ id: 'description' })}</th>
+                <th>{intl.formatMessage({ id: 'qty' })}</th>
+                <th>{intl.formatMessage({ id: 'unitPrice' })}</th>
+                <th>{intl.formatMessage({ id: 'netAmount' })}</th>
               </tr>
             </thead>
             <tbody>
@@ -211,29 +210,29 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
             </tbody>
           </table>
           <div className="invoice-summary">
-            <div><span>{t('totalNet')}</span> <span>{netAmountSum.toFixed(2)}</span></div>
-            <div><span>{t('vatBase')}</span> <span>{netAmountSum.toFixed(2)}</span></div>
-            <div><span>{t('vatAmount')}</span> <span>{vatAmountSum.toFixed(2)}</span></div>
-            <div><span>{t('totalDue')}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
+            <div><span>{intl.formatMessage({ id: 'totalNet' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
+            <div><span>{intl.formatMessage({ id: 'vatBase' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
+            <div><span>{intl.formatMessage({ id: 'vatAmount' })}</span> <span>{vatAmountSum.toFixed(2)}</span></div>
+            <div><span>{intl.formatMessage({ id: 'totalDue' })}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
             <div style={{ marginTop: 0, fontWeight: 500, textAlign: 'left', width: '100%', display: 'block' }}>
-              {t('inWords')}: <span style={{ fontStyle: 'italic', marginLeft: 8 }}>{totalDueInWords.charAt(0).toUpperCase() + totalDueInWords.slice(1)}</span>
+              {intl.formatMessage({ id: 'inWords' })}: <span style={{ fontStyle: 'italic', marginLeft: 8 }}>{totalDueInWords.charAt(0).toUpperCase() + totalDueInWords.slice(1)}</span>
             </div>
             <div style={{ marginTop: 0, textAlign: 'left', width: '100%', display: 'block' }}>
-              <span style={{ fontWeight: 500 }}>{t('issueDate')}</span> <span style={{ marginLeft: 8 }}>{issueDate}</span>
+              <span style={{ fontWeight: 500 }}>{intl.formatMessage({ id: 'issueDate' })}</span> <span style={{ marginLeft: 8 }}>{issueDate}</span>
             </div>
             <div style={{ marginTop: 0, textAlign: 'left', width: '100%', display: 'block' }}>
-              <span style={{ fontWeight: 500 }}>{t('dueDate')}</span> <span style={{ marginLeft: 8 }}>{dueDate}</span>
+              <span style={{ fontWeight: 500 }}>{intl.formatMessage({ id: 'dueDate' })}</span> <span style={{ marginLeft: 8 }}>{dueDate}</span>
             </div>
           </div>
           <div className="payment-instructions">
-            <div style={{ fontWeight: 600, marginBottom: 8, fontSize: '1.08rem', color: '#192442' }}>{t('paymentMethods')}</div>
+            <div style={{ fontWeight: 600, marginBottom: 8, fontSize: '1.08rem', color: '#192442' }}>{intl.formatMessage({ id: 'paymentMethods' })}</div>
             <div className="payment-row">
-              <span className="payment-label">{t('cardPayment')}</span>
-              <span className="payment-detail">{t('onlineViaStripe')}</span>
+              <span className="payment-label">{intl.formatMessage({ id: 'cardPayment' })}</span>
+              <span className="payment-detail">{intl.formatMessage({ id: 'onlineViaStripe' })}</span>
             </div>
             <div className="payment-row">
-              <span className="payment-label">{t('bankTransfer')}</span>
-              <span className="payment-detail">{t('bankDetails')}</span>
+              <span className="payment-label">{intl.formatMessage({ id: 'bankTransfer' })}</span>
+              <span className="payment-detail">{intl.formatMessage({ id: 'bankDetails' })}</span>
             </div>
           </div>
         </div>
