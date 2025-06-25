@@ -18,7 +18,9 @@
     "html2pdf.js": "^0.10.3",
     "lucide-react": "^0.523.0",
     "next": "15.3.4",
+    "next-intl": "^4.3.1",
     "number-to-words": "^1.2.4",
+    "nums2words-bg": "^1.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.1"
@@ -27,6 +29,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/number-to-words": "^1.2.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

@@ -1,6 +1,8 @@
+import { useTranslations } from 'next-intl';
 import Image from "next/image";
 
 export default function Home() {
+  const t = useTranslations();
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground px-4 py-16 font-sans relative overflow-hidden">
       {/* Blurred Gradient Background */}
@@ -26,7 +28,7 @@ export default function Home() {
           priority
         />
         <h1 className="text-3xl sm:text-4xl font-bold text-center leading-tight">
-          Welcome to the Webrush Client Portal
+          {t('welcome')}
         </h1>
         <p className="text-lg text-muted-foreground text-center max-w-md">
           This is your secure space to view and manage your invoices, powered by Webrush Studio. If you received a direct invoice link, you can view its details here. For any questions or support, please reach out to our team.

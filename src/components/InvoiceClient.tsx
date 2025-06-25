@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { GetPageResponse, PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import React, { useRef } from 'react';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface InvoiceClientProps {
   invoice: GetPageResponse;
@@ -72,6 +73,9 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client })
               <div className="font-semibold text-[#192442] text-lg text-center mb-2">{clientName}</div>
             </CardHeader>
             <CardContent className="w-full pt-0">
+              <div className="mb-4 flex justify-center">
+                <LanguageSwitcher />
+              </div>
               <DialogTrigger asChild>
                 <Button className="w-full mb-3 bg-[#635bff] hover:bg-[#4f46e5] font-semibold">
                   Pay via Stripe

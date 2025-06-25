@@ -1,8 +1,11 @@
 import { Client } from '@notionhq/client';
 
+console.log(process.env.NOTION_API_KEY);
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
+console.log(process.env.INVOICES_DB_KEY);
 const INVOICE_DB_KEY = process.env.INVOICES_DB_KEY;
+console.log(INVOICE_DB_KEY);
 const INVOICE_LINES_DB_KEY = process.env.INVOICE_LINES_DB_KEY;
 
 if (!INVOICE_DB_KEY || !INVOICE_LINES_DB_KEY) {

@@ -1,0 +1,27 @@
+{
+    "welcome": "Добре дошли в клиентския портал на Webrush", 
+    "invoiceTitle": "Фактура",
+    "webrushStudio": "Webrush Studio",
+    "issuedTo": "Издадено на",
+    "issuedBy": "Издадено от",
+    "vat": "ДДС:",
+    "address": "Адрес:",
+    "description": "Описание",
+    "qty": "Количество",
+    "unitPrice": "Единична цена",
+    "netAmount": "Нетна сума",
+    "totalNet": "Общо нето:",
+    "vatBase": "ДДС основа:",
+    "vatAmount": "Сума ДДС:",
+    "totalDue": "Общо дължимо:",
+    "inWords": "С думи",
+    "issueDate": "Дата на издаване:",
+    "dueDate": "Краен срок:",
+    "paymentMethods": "Методи на плащане",
+    "cardPayment": "Плащане с карта",
+    "onlineViaStripe": "Онлайн чрез Stripe портал",
+    "bankTransfer": "Банков превод",
+    "bankDetails": "ОББ: IBAN12344"
+}
+
+

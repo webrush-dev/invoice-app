@@ -3,7 +3,9 @@
 // If you want to add types, create a declaration file with: declare module 'html2pdf.js';
 
 import { GetPageResponse, PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { useLocale, useTranslations } from 'next-intl';
 import { toWords } from 'number-to-words';
+import nums2wordsBG from 'nums2words-bg';
 import { forwardRef } from 'react';
 import "./Invoice.css";
 
@@ -114,14 +116,31 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
     }
 
     // For localization, wrap the label and conversion in variables
+    const t = useTranslations();
+    const currentLocale = useLocale();
+    console.log('currentLocale', currentLocale);
     const inWordsLabel = 'In Words'; // For future translation
-    const integerPart = Math.floor(amountWithTaxSum);
-    const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
-    const integerWords = toWords(integerPart);
-    const centsWords = decimalPart > 0 ? toWords(decimalPart) + ' cents' : '';
-    const totalDueInWords = centsWords
-      ? `${integerWords} and ${centsWords}`
-      : integerWords;
+    let totalDueInWords = '';
+    if (currentLocale === 'bg') {
+      try {
+        totalDueInWords = String(
+          nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
+            labelBig: 'евро',
+            labelSmall: 'евро цента'
+          })
+        );
+      } catch (e) {
+        totalDueInWords = '';
+      }
+    } else {
+      const integerPart = Math.floor(amountWithTaxSum);
+      const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
+      let integerWords = toWords(integerPart);
+      let centsWords = decimalPart > 0 ? toWords(decimalPart) + ' cents' : '';
+      totalDueInWords = centsWords
+        ? `${integerWords} and ${centsWords}`
+        : integerWords;
+    }
 
     return (
       <div className="invoice-container" ref={invoiceRef}>
@@ -141,40 +160,39 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
         </svg>
         <div className="pdf-a4-content">
           <div className="invoice-header">
-            <img src="/assets/Webrush.png" alt="Webrush Studio Logo" className="invoice-logo" width={48} height={48} style={{ maxWidth: '100%', maxHeight: '100%' }} />
+            <img src="/assets/Webrush.png" alt={t('webrushStudio')} className="invoice-logo" width={48} height={48} style={{ maxWidth: '100%', maxHeight: '100%' }} />
             <div>
               <div className="invoice-title">
-                Invoice {invoiceNumber}
+                {t('invoiceTitle')} {invoiceNumber}
                 <span className="invoice-title-underline" />
               </div>
               {/* <div className="invoice-status">Status: {status}</div> */}
-              <div className="invoice-agency">Webrush Studio</div>
+              <div className="invoice-agency">{t('webrushStudio')}</div>
             </div>
           </div>
           <div className="invoice-details-row">
             {/* Issued To (Client) */}
             <div className="invoice-details-block" style={{ minWidth: 200 }}>
-              <div className="invoice-details-label">Issued to</div>
+              <div className="invoice-details-label">{t('issuedTo')}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}></span> {clientName}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>VAT:</span> {clientVAT}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>Address:</span> {clientAddress}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('vat')}</span> {clientVAT}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('address')}</span> {clientAddress}</div>
             </div>
             {/* Issued By (Agency) */}
             <div className="invoice-details-block" style={{ textAlign: 'right' }}>
-              <div className="invoice-details-label">Issued by</div>
+              <div className="invoice-details-label">{t('issuedBy')}</div>
               <div className="invoice-details-value">{issuerName}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>VAT:</span> {issuerVAT}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>Address:</span> {issuerAddress}</div>
-              <div className="invoice-details-value" style={{ fontSize: '0.95rem', color: 'var(--webrush-blue)' }}>webrush.studio</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('vat')}</span> {issuerVAT}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{t('address')}</span> {issuerAddress}</div>
             </div>
           </div>
           <table className="invoice-table">
             <thead>
               <tr>
-                <th>Description</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Net Amount</th>
+                <th>{t('description')}</th>
+                <th>{t('qty')}</th>
+                <th>{t('unitPrice')}</th>
+                <th>{t('netAmount')}</th>
               </tr>
             </thead>
             <tbody>
@@ -193,29 +211,29 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
             </tbody>
           </table>
           <div className="invoice-summary">
-            <div><span>Total Net:</span> <span>{netAmountSum.toFixed(2)}</span></div>
-            <div><span>VAT Base:</span> <span>{netAmountSum.toFixed(2)}</span></div>
-            <div><span>VAT Amount:</span> <span>{vatAmountSum.toFixed(2)}</span></div>
-            <div><span>Total Due:</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
+            <div><span>{t('totalNet')}</span> <span>{netAmountSum.toFixed(2)}</span></div>
+            <div><span>{t('vatBase')}</span> <span>{netAmountSum.toFixed(2)}</span></div>
+            <div><span>{t('vatAmount')}</span> <span>{vatAmountSum.toFixed(2)}</span></div>
+            <div><span>{t('totalDue')}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
             <div style={{ marginTop: 0, fontWeight: 500, textAlign: 'left', width: '100%', display: 'block' }}>
-              {inWordsLabel}: <span style={{ fontStyle: 'italic', marginLeft: 8 }}>{totalDueInWords.charAt(0).toUpperCase() + totalDueInWords.slice(1)}</span>
+              {t('inWords')}: <span style={{ fontStyle: 'italic', marginLeft: 8 }}>{totalDueInWords.charAt(0).toUpperCase() + totalDueInWords.slice(1)}</span>
             </div>
             <div style={{ marginTop: 0, textAlign: 'left', width: '100%', display: 'block' }}>
-              <span style={{ fontWeight: 500 }}>Issue Date:</span> <span style={{ marginLeft: 8 }}>{issueDate}</span>
+              <span style={{ fontWeight: 500 }}>{t('issueDate')}</span> <span style={{ marginLeft: 8 }}>{issueDate}</span>
             </div>
             <div style={{ marginTop: 0, textAlign: 'left', width: '100%', display: 'block' }}>
-              <span style={{ fontWeight: 500 }}>Due Date:</span> <span style={{ marginLeft: 8 }}>{dueDate}</span>
+              <span style={{ fontWeight: 500 }}>{t('dueDate')}</span> <span style={{ marginLeft: 8 }}>{dueDate}</span>
             </div>
           </div>
           <div className="payment-instructions">
-            <div style={{ fontWeight: 600, marginBottom: 8, fontSize: '1.08rem', color: '#192442' }}>Payment Methods</div>
+            <div style={{ fontWeight: 600, marginBottom: 8, fontSize: '1.08rem', color: '#192442' }}>{t('paymentMethods')}</div>
             <div className="payment-row">
-              <span className="payment-label">Card Payment</span>
-              <span className="payment-detail">Online via Stripe portal</span>
+              <span className="payment-label">{t('cardPayment')}</span>
+              <span className="payment-detail">{t('onlineViaStripe')}</span>
             </div>
             <div className="payment-row">
-              <span className="payment-label">Bank Transfer</span>
-              <span className="payment-detail">OBB: IBAN12344</span>
+              <span className="payment-label">{t('bankTransfer')}</span>
+              <span className="payment-detail">{t('bankDetails')}</span>
             </div>
           </div>
         </div>
