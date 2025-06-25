@@ -109,7 +109,7 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client })
       </Dialog>
       {/* Footer */}
       <footer className="w-full bg-[#f5f6fa] text-[#192442] text-center py-5 text-base font-medium border-t border-[#e5e5e5] mt-8">
-        © 2024 Webrush Studio — webrush.studio
+        © 2025 Webrush Studio — webrush.studio
       </footer>
     </div>
   );

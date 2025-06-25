@@ -1,3 +1,10 @@
+export const metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 import InvoiceClient from '@/components/InvoiceClient';
 import { fetchClientById, fetchInvoiceById, fetchInvoiceLinesByInvoiceId } from '@/lib/notion';
 import { notFound } from 'next/navigation';
