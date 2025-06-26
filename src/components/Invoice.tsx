@@ -44,10 +44,10 @@ interface InvoiceProps {
   invoice: GetPageResponse;
   lines: (PageObjectResponse | PartialPageObjectResponse)[];
   client: GetPageResponse | null;
-  invoiceRef: React.RefObject<HTMLDivElement>;
+  invoiceRef?: React.RefObject<HTMLDivElement>;
 }
 
-const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { invoiceRef: React.RefObject<HTMLDivElement> }>(
+const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
   ({ invoice, lines, client, invoiceRef }, ref) => {
     // Notion SDK does not expose 'properties' in a type-safe way, so we use 'as any'.
     const invoiceProps = invoice.properties as any;
@@ -158,6 +158,9 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
         : integerWords;
     }
 
+    const itemNumberLabel = currentLocale === 'bg' ? '№' : 'No.';
+    const itemLabel = currentLocale === 'bg' ? 'Стока/услуга' : intl.formatMessage({ id: 'description' });
+
     return (
       <div className="invoice-container" ref={invoiceRef}>
         {/* Wavy top divider */}
@@ -207,18 +210,20 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
           <table className="invoice-table">
             <thead>
               <tr>
-                <th>{intl.formatMessage({ id: 'description' })}</th>
+                <th style={{ width: 32 }}>{itemNumberLabel}</th>
+                <th>{itemLabel}</th>
                 <th>{intl.formatMessage({ id: 'qty' })}</th>
                 <th>{intl.formatMessage({ id: 'unitPrice' })}</th>
                 <th>{intl.formatMessage({ id: 'netAmount' })}</th>
               </tr>
             </thead>
             <tbody>
-              {lines.map((line) => {
+              {lines.map((line, idx) => {
                 if (!('properties' in line)) return null;
                 const props = (line as any).properties;
                 return (
                   <tr key={line.id}>
+                    <td style={{ width: 32 }}>{idx + 1}</td>
                     <td>{getText(props['Item Description'])}</td>
                     <td>{getNumber(props.Quantity)}</td>
                     <td>{getRollupNumber(props['Unit Price']).toFixed(2)}</td>
