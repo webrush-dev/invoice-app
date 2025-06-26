@@ -3,13 +3,13 @@ import Invoice from '@/components/Invoice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from '@/components/ui/dialog';
 import { GetPageResponse, PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import React, { useRef } from 'react';
@@ -62,55 +62,57 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client })
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Dialog>
-        <div className="flex flex-col md:flex-row max-w-5xl mx-auto w-full gap-8 py-8">
-          {/* Side Panel */}
-          <Card className="w-full md:w-72 bg-[#f5f6fa] rounded-xl shadow-md flex flex-col items-center h-fit sticky top-8">
-            <CardHeader className="flex flex-col items-center pb-0">
-              {clientLogoUrl && (
-                <img src={clientLogoUrl} alt="Client Logo" className="max-w-[70px] max-h-[40px] mb-2 rounded bg-white object-contain shadow" />
-              )}
-              <div className="font-semibold text-[#192442] text-lg text-center mb-2">{clientName}</div>
-            </CardHeader>
-            <CardContent className="w-full pt-0">
-              <div className="mb-4 flex justify-center">
-                <LanguageSwitcher />
-              </div>
-              <DialogTrigger asChild>
-                <Button className="w-full mb-3 bg-[#635bff] hover:bg-[#4f46e5] font-semibold">
-                  Pay via Stripe
+      <div className="flex-1 flex flex-col">
+        <Dialog>
+          <div className="flex flex-col md:flex-row max-w-5xl mx-auto w-full gap-8 py-8">
+            {/* Side Panel */}
+            <Card className="w-full md:w-72 bg-[#f5f6fa] rounded-xl shadow-md flex flex-col items-center h-fit sticky top-8">
+              <CardHeader className="flex flex-col items-center pb-0">
+                {clientLogoUrl && (
+                  <img src={clientLogoUrl} alt="Client Logo" className="max-w-[70px] max-h-[40px] mb-2 rounded bg-white object-contain shadow" />
+                )}
+                <div className="font-semibold text-[#192442] text-lg text-center mb-2">{clientName}</div>
+              </CardHeader>
+              <CardContent className="w-full pt-0">
+                <div className="mb-4 flex justify-center">
+                  <LanguageSwitcher />
+                </div>
+                <DialogTrigger asChild>
+                  <Button className="w-full mb-3 bg-[#635bff] hover:bg-[#4f46e5] font-semibold">
+                    Pay via Stripe
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Stripe Unavailable</DialogTitle>
+                    <DialogDescription>
+                      Sorry, the Stripe payment service is currently unavailable.<br />
+                      We are working to enable this feature soon.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogClose asChild>
+                    <Button>Close</Button>
+                  </DialogClose>
+                </DialogContent>
+                <div className="w-full bg-white rounded p-3 text-[#192442] text-sm shadow mb-2">
+                  <div className="font-semibold mb-1">Bank Transfer</div>
+                  <div><b>IBAN:</b> BG00XXXX00000000000000</div>
+                  <div><b>BIC:</b> FINVXXXX</div>
+                  <div><b>Bank:</b> Example Bank</div>
+                  <div><b>Recipient:</b> Webrush Studio</div>
+                </div>
+                <Button className="download-btn w-full mt-3" onClick={handleDownloadPDF}>
+                  Download as PDF
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Stripe Unavailable</DialogTitle>
-                  <DialogDescription>
-                    Sorry, the Stripe payment service is currently unavailable.<br />
-                    We are working to enable this feature soon.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogClose asChild>
-                  <Button>Close</Button>
-                </DialogClose>
-              </DialogContent>
-              <div className="w-full bg-white rounded p-3 text-[#192442] text-sm shadow mb-2">
-                <div className="font-semibold mb-1">Bank Transfer</div>
-                <div><b>IBAN:</b> BG00XXXX00000000000000</div>
-                <div><b>BIC:</b> FINVXXXX</div>
-                <div><b>Bank:</b> Example Bank</div>
-                <div><b>Recipient:</b> Webrush Studio</div>
-              </div>
-              <Button className="download-btn w-full mt-3" onClick={handleDownloadPDF}>
-                Download as PDF
-              </Button>
-            </CardContent>
-          </Card>
-          {/* Invoice Content */}
-          <div className="flex-1">
-            <Invoice invoice={invoice} lines={lines} client={client} invoiceRef={invoiceRef} />
+              </CardContent>
+            </Card>
+            {/* Invoice Content */}
+            <div className="flex-1">
+              <Invoice invoice={invoice} lines={lines} client={client} invoiceRef={invoiceRef} />
+            </div>
           </div>
-        </div>
-      </Dialog>
+        </Dialog>
+      </div>
       {/* Footer */}
       <footer className="w-full bg-[#f5f6fa] text-[#192442] text-center py-5 text-base font-medium border-t border-[#e5e5e5] mt-8">
         © 2025 Webrush Studio — webrush.studio

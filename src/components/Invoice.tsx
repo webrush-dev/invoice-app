@@ -30,6 +30,16 @@ function getDate(prop: any): string {
   return prop?.date?.start || '';
 }
 
+function formatDateDMY(dateStr: string): string {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
 interface InvoiceProps {
   invoice: GetPageResponse;
   lines: (PageObjectResponse | PartialPageObjectResponse)[];
@@ -95,18 +105,26 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
 
     // Extract new issuer and client info from rollup fields
     let issuerName = '';
+    let issuerReg = '';
     let issuerVAT = '';
     let issuerAddress = '';
+    let clientReg = '';
     let clientVAT = '';
     let clientAddress = '';
     if (invoiceProps['Issuer Name']?.rollup?.array?.[0]?.title?.[0]?.plain_text) {
       issuerName = invoiceProps['Issuer Name'].rollup.array[0].title[0].plain_text;
+    }
+    if (invoiceProps['Issuer Reg #']?.rollup?.array?.[0]?.rich_text?.[0]?.plain_text) {
+      issuerReg = invoiceProps['Issuer Reg #'].rollup.array[0].rich_text[0].plain_text;
     }
     if (invoiceProps['Issuer VAT']?.rollup?.array?.[0]?.rich_text?.[0]?.plain_text) {
       issuerVAT = invoiceProps['Issuer VAT'].rollup.array[0].rich_text[0].plain_text;
     }
     if (invoiceProps['Issuer Address']?.rollup?.array?.[0]?.rich_text?.[0]?.plain_text) {
       issuerAddress = invoiceProps['Issuer Address'].rollup.array[0].rich_text[0].plain_text;
+    }
+    if (invoiceProps['Client Reg #']?.rollup?.array?.[0]?.rich_text?.[0]?.plain_text) {
+      clientReg = invoiceProps['Client Reg #'].rollup.array[0].rich_text[0].plain_text;
     }
     if (invoiceProps['Client VAT']?.rollup?.array?.[0]?.rich_text?.[0]?.plain_text) {
       clientVAT = invoiceProps['Client VAT'].rollup.array[0].rich_text[0].plain_text;
@@ -159,29 +177,31 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
         <div className="pdf-a4-content">
           <div className="invoice-header">
             <img src="/assets/Webrush.png" alt={intl.formatMessage({ id: 'webrushStudio' })} className="invoice-logo" width={48} height={48} style={{ maxWidth: '100%', maxHeight: '100%' }} />
-            <div>
+            <div className="invoice-title-row">
               <div className="invoice-title">
                 {intl.formatMessage({ id: 'invoiceTitle' })} {invoiceNumber}
                 <span className="invoice-title-underline" />
               </div>
-              {/* <div className="invoice-status">Status: {status}</div> */}
-              <div className="invoice-agency">{intl.formatMessage({ id: 'webrushStudio' })}</div>
+              {/* <div className="invoice-agency">{intl.formatMessage({ id: 'webrushStudio' })}</div> */}
             </div>
+            <div className="invoice-original-label">{intl.formatMessage({ id: 'originalLabel', defaultMessage: 'Original' })}</div>
           </div>
           <div className="invoice-details-row">
             {/* Issued To (Client) */}
             <div className="invoice-details-block" style={{ minWidth: 200 }}>
               <div className="invoice-details-label">{intl.formatMessage({ id: 'issuedTo' })}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}></span> {clientName}</div>
+              <div className="invoice-details-value">{clientAddress}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'reg' })}</span> {clientReg}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'vat' })}</span> {clientVAT}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'address' })}</span> {clientAddress}</div>
             </div>
             {/* Issued By (Agency) */}
             <div className="invoice-details-block" style={{ textAlign: 'right' }}>
               <div className="invoice-details-label">{intl.formatMessage({ id: 'issuedBy' })}</div>
-              <div className="invoice-details-value">{issuerName}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}></span>{issuerName}</div>
+              <div className="invoice-details-value">{issuerAddress}</div>
+              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'reg' })}</span> {issuerReg}</div>
               <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'vat' })}</span> {issuerVAT}</div>
-              <div className="invoice-details-value"><span style={{ fontWeight: 600 }}>{intl.formatMessage({ id: 'address' })}</span> {issuerAddress}</div>
             </div>
           </div>
           <table className="invoice-table">
@@ -208,19 +228,26 @@ const Invoice = forwardRef<HTMLDivElement, Omit<InvoiceProps, 'invoiceRef'> & { 
               })}
             </tbody>
           </table>
-          <div className="invoice-summary">
-            <div><span>{intl.formatMessage({ id: 'totalNet' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
-            <div><span>{intl.formatMessage({ id: 'vatBase' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
-            <div><span>{intl.formatMessage({ id: 'vatAmount' })}</span> <span>{vatAmountSum.toFixed(2)}</span></div>
-            <div><span>{intl.formatMessage({ id: 'totalDue' })}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
-            <div style={{ marginTop: 0, fontWeight: 500, textAlign: 'left', width: '100%', display: 'block' }}>
-              {intl.formatMessage({ id: 'inWords' })}: <span style={{ fontStyle: 'italic', marginLeft: 8 }}>{totalDueInWords.charAt(0).toUpperCase() + totalDueInWords.slice(1)}</span>
+          {/* Invoice Summary Row: Two Columns */}
+          <div className="invoice-summary-row">
+            {/* Left: In Words, Issue Date, Due Date */}
+            <div className="invoice-summary-left">
+              <div style={{ fontWeight: 500, textAlign: 'left', marginBottom: 8 }}>
+                {intl.formatMessage({ id: 'inWords' })}: <span style={{ fontStyle: 'italic', marginLeft: 8 }}>{totalDueInWords.charAt(0).toUpperCase() + totalDueInWords.slice(1)}</span>
+              </div>
+              <div style={{ fontWeight: 500, textAlign: 'left', marginBottom: 4 }}>
+                {intl.formatMessage({ id: 'issueDate' })} <span style={{ marginLeft: 8 }}>{formatDateDMY(issueDate)}</span>
+              </div>
+              <div style={{ fontWeight: 500, textAlign: 'left' }}>
+                {intl.formatMessage({ id: 'dueDate' })} <span style={{ marginLeft: 8 }}>{formatDateDMY(dueDate)}</span>
+              </div>
             </div>
-            <div style={{ marginTop: 0, textAlign: 'left', width: '100%', display: 'block' }}>
-              <span style={{ fontWeight: 500 }}>{intl.formatMessage({ id: 'issueDate' })}</span> <span style={{ marginLeft: 8 }}>{issueDate}</span>
-            </div>
-            <div style={{ marginTop: 0, textAlign: 'left', width: '100%', display: 'block' }}>
-              <span style={{ fontWeight: 500 }}>{intl.formatMessage({ id: 'dueDate' })}</span> <span style={{ marginLeft: 8 }}>{dueDate}</span>
+            {/* Right: Totals */}
+            <div className="invoice-summary-totals">
+              <div><span>{intl.formatMessage({ id: 'totalNet' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
+              <div><span>{intl.formatMessage({ id: 'vatBase' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
+              <div><span>{intl.formatMessage({ id: 'vatAmount' })}</span> <span>{vatAmountSum.toFixed(2)}</span></div>
+              <div><span>{intl.formatMessage({ id: 'totalDue' })}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
             </div>
           </div>
           <div className="payment-instructions">
