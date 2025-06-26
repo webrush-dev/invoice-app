@@ -210,11 +210,11 @@ const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
           <table className="invoice-table">
             <thead>
               <tr>
-                <th style={{ width: 32 }}>{itemNumberLabel}</th>
-                <th>{itemLabel}</th>
-                <th>{intl.formatMessage({ id: 'qty' })}</th>
-                <th>{intl.formatMessage({ id: 'unitPrice' })}</th>
-                <th>{intl.formatMessage({ id: 'netAmount' })}</th>
+                <th style={{ width: '5%' }}>{itemNumberLabel}</th>
+                <th style={{ width: '25%', wordBreak: 'break-word', whiteSpace: 'normal', textAlign: 'left' }}>{itemLabel}</th>
+                <th style={{ width: '15%', wordBreak: 'break-word', whiteSpace: 'normal', textAlign: 'center' }}>{intl.formatMessage({ id: 'qty' })}</th>
+                <th style={{ width: '10%', textAlign: 'center' }}>{intl.formatMessage({ id: 'unitPrice' })}</th>
+                <th style={{ width: '10%', textAlign: 'center' }}>{intl.formatMessage({ id: 'netAmount' })}</th>
               </tr>
             </thead>
             <tbody>
@@ -223,11 +223,11 @@ const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
                 const props = (line as any).properties;
                 return (
                   <tr key={line.id}>
-                    <td style={{ width: 32 }}>{idx + 1}</td>
-                    <td>{getText(props['Item Description'])}</td>
-                    <td>{getNumber(props.Quantity)}</td>
-                    <td>{getRollupNumber(props['Unit Price']).toFixed(2)}</td>
-                    <td>{getFormulaNumber(props['Net Amount']).toFixed(2)}</td>
+                    <td style={{ width: '5%' }}>{idx + 1}</td>
+                    <td style={{ width: '25%', wordBreak: 'break-word', whiteSpace: 'normal', textAlign: 'left' }}>{getText(props['Item Description'])}</td>
+                    <td style={{ width: '15%', wordBreak: 'break-word', whiteSpace: 'normal', textAlign: 'center' }}>{getNumber(props.Quantity)}</td>
+                    <td style={{ width: '10%', textAlign: 'center' }}>{getRollupNumber(props['Unit Price']).toFixed(2)}</td>
+                    <td style={{ width: '10%', textAlign: 'center' }}>{getFormulaNumber(props['Net Amount']).toFixed(2)}</td>
                   </tr>
                 );
               })}

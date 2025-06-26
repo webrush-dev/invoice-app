@@ -210,6 +210,10 @@ const styles = StyleSheet.create({
   tableCellLeft: {
     textAlign: 'left',
   },
+  tableCellDescription: {
+    textAlign: 'left',
+    flexShrink: 1,
+  },
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -369,22 +373,22 @@ const InvoicePDF: React.FC<InvoicePDFProps> = (props) => {
         {/* Table */}
         <View style={styles.table}>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableHeader, styles.tableCellLeft, { width: 32 }]}> {labels.itemNumberLabel} </Text>
-            <Text style={[styles.tableHeader, styles.tableCellLeft]}>{labels.itemLabel}</Text>
-            <Text style={styles.tableHeader}>{labels.qtyLabel}</Text>
-            <Text style={styles.tableHeader}>{labels.unitPriceLabel}</Text>
-            <Text style={styles.tableHeader}>{labels.netAmountLabel}</Text>
+            <Text style={[styles.tableHeader, { flex: 0.5 }]}> {labels.itemNumberLabel} </Text>
+            <Text style={[styles.tableHeader, styles.tableCellDescription, { flex: 2.5 }]}>{labels.itemLabel}</Text>
+            <Text style={[styles.tableHeader, { flex: 1 }]}>{labels.qtyLabel === 'Количество' ? 'Коли\u00ADчество' : labels.qtyLabel}</Text>
+            <Text style={[styles.tableHeader, { flex: 1.5 }]}>{labels.unitPriceLabel}</Text>
+            <Text style={[styles.tableHeader, { flex: 1.5 }]}>{labels.netAmountLabel}</Text>
           </View>
           {lines.map((line, idx) => (
             <View
               style={idx % 2 === 1 ? [styles.tableRow, styles.tableRowEven] : [styles.tableRow]}
               key={idx}
             >
-              <Text style={[styles.tableCell, styles.tableCellLeft, { width: 32 }]}>{idx + 1}</Text>
-              <Text style={[styles.tableCell, styles.tableCellLeft]}>{line.description}</Text>
-              <Text style={styles.tableCell}>{line.quantity}</Text>
-              <Text style={styles.tableCell}>{line.unitPrice.toFixed(2)}</Text>
-              <Text style={styles.tableCell}>{line.netAmount.toFixed(2)}</Text>
+              <Text style={[styles.tableCell, styles.tableCellLeft, { flex: 0.5 }]}>{idx + 1}</Text>
+              <Text style={[styles.tableCell, styles.tableCellDescription, { flex: 2.5 }]}>{line.description}</Text>
+              <Text style={[styles.tableCell, { flex: 1 }]}>{line.quantity}</Text>
+              <Text style={[styles.tableCell, { flex: 1.5 }]}>{line.unitPrice.toFixed(2)}</Text>
+              <Text style={[styles.tableCell, { flex: 1.5 }]}>{line.netAmount.toFixed(2)}</Text>
             </View>
           ))}
         </View>
