@@ -11,9 +11,11 @@ interface InvoicePageClientProps {
 }
 
 export default function InvoicePageClient({ invoice, lines, client }: InvoicePageClientProps) {
+  // Extract currency from Notion invoice properties (select field, fallback to 'EUR')
+  const currency = (invoice as any).properties?.Currency?.select?.name || 'EUR';
   return (
     <div>
-      <InvoiceClient invoice={invoice} lines={lines} client={client} />
+      <InvoiceClient invoice={invoice} lines={lines} client={client} currency={currency} />
     </div>
   );
 } 

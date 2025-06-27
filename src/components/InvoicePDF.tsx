@@ -83,7 +83,10 @@ interface InvoicePDFProps {
     bankDetailsLabel: string;
     itemNumberLabel: string;
     itemLabel: string;
+    bgnConversionLine?: string;
   };
+  currency: string;
+  bgnConversionLine?: string;
 }
 
 const styles = StyleSheet.create({
@@ -327,6 +330,8 @@ const InvoicePDF: React.FC<InvoicePDFProps> = (props) => {
     amountWithTaxSum,
     totalDueInWords,
     labels,
+    currency,
+    bgnConversionLine,
   } = props;
 
   return (
@@ -403,9 +408,17 @@ const InvoicePDF: React.FC<InvoicePDFProps> = (props) => {
             <Text style={styles.summaryLabel}>{labels.totalNetLabel} <Text style={{ fontWeight: 400 }}>{netAmountSum.toFixed(2)}</Text></Text>
             <Text style={styles.summaryLabel}>{labels.vatBaseLabel} <Text style={{ fontWeight: 400 }}>{netAmountSum.toFixed(2)}</Text></Text>
             <Text style={styles.summaryLabel}>{labels.vatAmountLabel} <Text style={{ fontWeight: 400 }}>{vatAmountSum.toFixed(2)}</Text></Text>
-            <Text style={styles.summaryLabel}>{labels.totalDueLabel} <Text style={styles.summaryTotal}>€{amountWithTaxSum.toFixed(2)}</Text></Text>
+            <Text style={styles.summaryLabel}>{labels.totalDueLabel} <Text style={styles.summaryTotal}>{currency === 'BGN' ? `${amountWithTaxSum.toFixed(2)} ${(labels.dueDateLabel === 'Срок за плащане:' ? 'лв.' : 'BGN')}` : `€${amountWithTaxSum.toFixed(2)}`}</Text></Text>
           </View>
         </View>
+        {/* BGN conversion line if present, below the summary row, right aligned */}
+        {bgnConversionLine && (
+          <View style={{ marginTop: 12, marginBottom: 12, width: '100%', alignItems: 'flex-end', display: 'flex' }}>
+            <Text style={{ fontSize: 15, color: '#666', fontStyle: 'italic', textAlign: 'right', padding: 4 }}>
+              {bgnConversionLine}
+            </Text>
+          </View>
+        )}
         {/* Payment Instructions Bubble */}
         <View style={styles.paymentInstructionsBubble}>
           <Text style={styles.paymentInstructionsTitle}>{labels.paymentMethodsLabel}</Text>

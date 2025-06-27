@@ -45,10 +45,11 @@ interface InvoiceProps {
   lines: (PageObjectResponse | PartialPageObjectResponse)[];
   client: GetPageResponse | null;
   invoiceRef?: React.RefObject<HTMLDivElement>;
+  currency: string;
 }
 
 const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
-  ({ invoice, lines, client, invoiceRef }, ref) => {
+  ({ invoice, lines, client, invoiceRef, currency }, ref) => {
     // Notion SDK does not expose 'properties' in a type-safe way, so we use 'as any'.
     const invoiceProps = invoice.properties as any;
     const clientProps = client ? (client.properties as any) : null;
@@ -137,25 +138,48 @@ const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
     const intl = useIntl();
     const currentLocale = intl.locale;
     let totalDueInWords = '';
-    if (currentLocale === 'bg') {
-      try {
-        totalDueInWords = String(
-          nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
-            labelBig: 'евро',
-            labelSmall: 'евро цента'
-          })
-        );
-      } catch (e) {
-        totalDueInWords = '';
+    if (currency === 'BGN') {
+      if (currentLocale === 'bg') {
+        try {
+          totalDueInWords = String(
+            nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
+              labelBig: 'лева',
+              labelSmall: 'стотинки',
+            })
+          );
+        } catch (e) {
+          totalDueInWords = '';
+        }
+      } else {
+        const integerPart = Math.floor(amountWithTaxSum);
+        const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
+        let integerWords = toWords(integerPart);
+        let centsWords = decimalPart > 0 ? toWords(decimalPart) + ' stotinki' : '';
+        totalDueInWords = centsWords
+          ? `${integerWords} and ${centsWords}`
+          : integerWords;
       }
     } else {
-      const integerPart = Math.floor(amountWithTaxSum);
-      const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
-      let integerWords = toWords(integerPart);
-      let centsWords = decimalPart > 0 ? toWords(decimalPart) + ' cents' : '';
-      totalDueInWords = centsWords
-        ? `${integerWords} and ${centsWords}`
-        : integerWords;
+      if (currentLocale === 'bg') {
+        try {
+          totalDueInWords = String(
+            nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
+              labelBig: 'евро',
+              labelSmall: 'евро цента',
+            })
+          );
+        } catch (e) {
+          totalDueInWords = '';
+        }
+      } else {
+        const integerPart = Math.floor(amountWithTaxSum);
+        const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
+        let integerWords = toWords(integerPart);
+        let centsWords = decimalPart > 0 ? toWords(decimalPart) + ' cents' : '';
+        totalDueInWords = centsWords
+          ? `${integerWords} and ${centsWords}`
+          : integerWords;
+      }
     }
 
     const itemNumberLabel = currentLocale === 'bg' ? '№' : 'No.';
@@ -252,9 +276,15 @@ const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
               <div><span>{intl.formatMessage({ id: 'totalNet' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
               <div><span>{intl.formatMessage({ id: 'vatBase' })}</span> <span>{netAmountSum.toFixed(2)}</span></div>
               <div><span>{intl.formatMessage({ id: 'vatAmount' })}</span> <span>{vatAmountSum.toFixed(2)}</span></div>
-              <div><span>{intl.formatMessage({ id: 'totalDue' })}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>€{amountWithTaxSum.toFixed(2)}</span></div>
+              <div><span>{intl.formatMessage({ id: 'totalDue' })}</span> <span className="total" style={{ fontSize: '1.35rem', fontWeight: 700, marginLeft: 8 }}>{currency === 'BGN' ? `${amountWithTaxSum.toFixed(2)} ${currentLocale === 'bg' ? 'лв.' : 'BGN'}` : `€${amountWithTaxSum.toFixed(2)}`}</span></div>
             </div>
           </div>
+          {/* BGN conversion line if currency is BGN, below the summary row, right aligned */}
+          {currency === 'BGN' && (
+            <div style={{ marginTop: 0, marginBottom: 8, fontSize: '1rem', color: '#666', fontStyle: 'italic', textAlign: 'right', width: '100%' }}>
+              {intl.formatMessage({ id: 'bgnConversionLine' }, { euroPrice: (amountWithTaxSum / 1.95583).toFixed(2) })}
+            </div>
+          )}
           <div className="payment-instructions">
             <div style={{ fontWeight: 600, marginBottom: 8, fontSize: '1.08rem', color: '#192442' }}>{intl.formatMessage({ id: 'paymentMethods' })}</div>
             <div className="payment-row">

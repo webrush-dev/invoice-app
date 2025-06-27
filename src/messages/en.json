@@ -23,5 +23,6 @@
     "bankTransfer": "Bank Transfer",
     "bankDetails": "OBB: IBAN12344",
     "reg": "Reg #:",
-    "originalLabel": "Original"
+    "originalLabel": "Original",
+    "bgnConversionLine": "Price in Euro (1 € = 1.95583 BGN): {euroPrice} €"
 }

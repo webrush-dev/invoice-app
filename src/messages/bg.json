@@ -23,7 +23,8 @@
     "bankTransfer": "Банков превод",
     "bankDetails": "ОББ: IBAN12344",
     "reg": "Идент. №:",
-    "originalLabel": "Оригинал"
+    "originalLabel": "Оригинал",
+    "bgnConversionLine": "Цена в евро (1 € = 1,95583 лв.): {euroPrice} €"
 }
 
 

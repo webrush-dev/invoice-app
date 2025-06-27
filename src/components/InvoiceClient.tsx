@@ -24,9 +24,10 @@ interface InvoiceClientProps {
   invoice: GetPageResponse;
   lines: (PageObjectResponse | PartialPageObjectResponse)[];
   client: GetPageResponse | null;
+  currency: string;
 }
 
-const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client }) => {
+const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, currency }) => {
   const intl = useIntl();
   const currentLocale = intl.locale;
   const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
@@ -171,6 +172,13 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client })
     itemLabel: currentLocale === 'bg' ? 'Стока/услуга' : 'Item',
   };
 
+  // Calculate BGN conversion line for PDF if needed
+  let bgnConversionLine: string | undefined = undefined;
+  if (currency === 'BGN') {
+    const euroPrice = (amountWithTaxSum / 1.95583).toFixed(2);
+    bgnConversionLine = intl.formatMessage({ id: 'bgnConversionLine' }, { euroPrice });
+  }
+
   // Memoize the PDF document props
   const pdfDocProps = {
     invoiceNumber,
@@ -190,6 +198,8 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client })
     amountWithTaxSum,
     totalDueInWords,
     labels: pdfLabels,
+    currency,
+    bgnConversionLine,
   };
 
   // Regenerate PDF only when invoice data or locale changes
@@ -274,7 +284,7 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client })
             </Card>
             {/* Invoice Content */}
             <div className="flex-1">
-              <Invoice invoice={invoice} lines={lines} client={client} />
+              <Invoice invoice={invoice} lines={lines} client={client} currency={currency} />
             </div>
           </div>
         </Dialog>
