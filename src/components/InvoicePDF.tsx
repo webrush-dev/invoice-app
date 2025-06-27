@@ -1,11 +1,11 @@
 import {
-    Document,
-    Font,
-    Image,
-    Page,
-    StyleSheet,
-    Text,
-    View
+  Document,
+  Font,
+  Image,
+  Page,
+  StyleSheet,
+  Text,
+  View
 } from '@react-pdf/renderer';
 import React from 'react';
 
