@@ -260,7 +260,7 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, c
                 </DialogContent>
                 <div className="w-full bg-white rounded p-3 text-[#192442] text-sm shadow mb-2">
                   <div className="font-semibold mb-1">Bank Transfer</div>
-                  <div><b>IBAN:</b> BG00XXXX00000000000000</div>
+                  <div><b>IBAN:</b> BG84UBBS80021080174450</div>
                   <div><b>BIC:</b> FINVXXXX</div>
                   <div><b>Bank:</b> Example Bank</div>
                   <div><b>Recipient:</b> Webrush Studio</div>

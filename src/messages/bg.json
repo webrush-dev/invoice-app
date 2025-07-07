@@ -21,7 +21,7 @@
     "cardPayment": "Плащане с карта",
     "onlineViaStripe": "Онлайн чрез Stripe портал",
     "bankTransfer": "Банков превод",
-    "bankDetails": "ОББ: IBAN12344",
+    "bankDetails": "ОББ: BG84UBBS80021080174450",
     "reg": "Идент. №:",
     "originalLabel": "Оригинал",
     "bgnConversionLine": "Цена в евро (1 € = 1,95583 лв.): {euroPrice} €"

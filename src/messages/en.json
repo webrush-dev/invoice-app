@@ -21,7 +21,7 @@
     "cardPayment": "Card Payment",
     "onlineViaStripe": "Online via Stripe portal",
     "bankTransfer": "Bank Transfer",
-    "bankDetails": "OBB: IBAN12344",
+    "bankDetails": "OBB: IBAN12344BG84UBBS80021080174450",
     "reg": "Reg #:",
     "originalLabel": "Original",
     "bgnConversionLine": "Price in Euro (1 € = 1.95583 BGN): {euroPrice} €"
