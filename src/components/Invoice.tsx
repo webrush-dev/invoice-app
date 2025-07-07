@@ -291,9 +291,9 @@ const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
               <span className="payment-label">{intl.formatMessage({ id: 'cardPayment' })}</span>
               <span className="payment-detail">{intl.formatMessage({ id: 'onlineViaStripe' })}</span>
             </div>
-            <div className="payment-row">
+            <div className="payment-row" style={{ textAlign: 'left' }}>
               <span className="payment-label">{intl.formatMessage({ id: 'bankTransfer' })}</span>
-              <span className="payment-detail">{intl.formatMessage({ id: 'bankDetails' })}</span>
+              <span className="payment-detail"><span className="bank-details-iban">{intl.formatMessage({ id: 'bankDetails' })}</span></span>
             </div>
           </div>
         </div>

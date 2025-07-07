@@ -258,11 +258,11 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, c
                     <Button>Close</Button>
                   </DialogClose>
                 </DialogContent>
-                <div className="w-full bg-white rounded p-3 text-[#192442] text-sm shadow mb-2">
+                <div className="w-full bg-white rounded p-3 text-[#192442] text-sm shadow mb-2" style={{ textAlign: 'left' }}>
                   <div className="font-semibold mb-1">Bank Transfer</div>
-                  <div><b>IBAN:</b> BG84UBBS80021080174450</div>
-                  <div><b>BIC:</b> FINVXXXX</div>
-                  <div><b>Bank:</b> Example Bank</div>
+                  <div><b>IBAN:</b> <span className="bank-details-iban">BG84UBBS80021080174450</span></div>
+                  <div><b>BIC:</b> UBBSBGSF</div>
+                  <div><b>Bank:</b> Обединена Българска Банка</div>
                   <div><b>Recipient:</b> Webrush Studio</div>
                 </div>
                 {pdfBlobUrl && (

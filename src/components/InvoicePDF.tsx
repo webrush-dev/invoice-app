@@ -1,11 +1,11 @@
 import {
-  Document,
-  Font,
-  Image,
-  Page,
-  StyleSheet,
-  Text,
-  View
+    Document,
+    Font,
+    Image,
+    Page,
+    StyleSheet,
+    Text,
+    View
 } from '@react-pdf/renderer';
 import React from 'react';
 
@@ -298,6 +298,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 24,
   },
+  bankDetailsIban: {
+    fontFamily: 'Inter',
+    fontSize: 13,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '100%',
+  },
 });
 
 // Utility to format date as dd.mm.yyyy
@@ -428,7 +436,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = (props) => {
           </View>
           <View style={styles.paymentRow}>
             <Text style={styles.paymentLabel}>{labels.bankTransferLabel}</Text>
-            <Text style={styles.paymentDetail}>{labels.bankDetailsLabel}</Text>
+            <Text style={[styles.paymentDetail, styles.bankDetailsIban]}>{labels.bankDetailsLabel}</Text>
           </View>
         </View>
       </Page>
