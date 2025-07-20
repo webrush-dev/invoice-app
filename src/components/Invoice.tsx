@@ -250,7 +250,7 @@ const Invoice = forwardRef<HTMLDivElement, InvoiceProps>(
                     <td style={{ width: '5%' }}>{idx + 1}</td>
                     <td style={{ width: '25%', wordBreak: 'break-word', whiteSpace: 'normal', textAlign: 'left' }}>{getText(props['Item Description'])}</td>
                     <td style={{ width: '15%', wordBreak: 'break-word', whiteSpace: 'normal', textAlign: 'center' }}>{getNumber(props.Quantity)}</td>
-                    <td style={{ width: '10%', textAlign: 'center' }}>{getRollupNumber(props['Unit Price']).toFixed(2)}</td>
+                    <td style={{ width: '10%', textAlign: 'center' }}>{getNumber(props['Unit Price']).toFixed(2)}</td>
                     <td style={{ width: '10%', textAlign: 'center' }}>{getFormulaNumber(props['Net Amount']).toFixed(2)}</td>
                   </tr>
                 );
