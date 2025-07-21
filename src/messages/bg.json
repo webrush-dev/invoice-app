@@ -24,6 +24,7 @@
     "bankDetails": "ОББ: BG84UBBS80021080174450",
     "reg": "Идент. №:",
     "originalLabel": "Оригинал",
+    "printPdf": "Принтирай PDF",
     "bgnConversionLine": "Цена в евро (1 € = 1,95583 лв.): {euroPrice} €"
 }
 

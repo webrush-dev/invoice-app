@@ -1,0 +1,1 @@
+declare module 'nums2words-bg'; 

@@ -3,13 +3,13 @@ import Invoice from '@/components/Invoice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from '@/components/ui/dialog';
 import { GetPageResponse, PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { pdf } from '@react-pdf/renderer';
@@ -32,6 +32,18 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, c
   const currentLocale = intl.locale;
   const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // Function to handle printing the PDF
+  const handlePrintPdf = () => {
+    if (pdfBlobUrl) {
+      const printWindow = window.open(pdfBlobUrl, '_blank');
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+        };
+      }
+    }
+  };
 
   // Extract client logo and name for side panel
   let clientLogoUrl = null;
@@ -124,23 +136,44 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, c
 
   // Localize in words
   let totalDueInWords = '';
-  if (currentLocale === 'bg') {
-    try {
-      totalDueInWords = String(
-        nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
-          labelBig: 'евро',
-          labelSmall: 'евро цента',
-        })
-      );
-    } catch {
-      totalDueInWords = '';
+  if (currency === 'BGN') {
+    if (currentLocale === 'bg') {
+      try {
+        totalDueInWords = String(
+          nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
+            labelBig: 'лева',
+            labelSmall: 'стотинки',
+          })
+        );
+      } catch {
+        totalDueInWords = '';
+      }
+    } else {
+      const integerPart = Math.floor(amountWithTaxSum);
+      const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
+      const integerWords = toWords(integerPart);
+      const centsWords = decimalPart > 0 ? toWords(decimalPart) + ' stotinki' : '';
+      totalDueInWords = centsWords ? `${integerWords} and ${centsWords}` : integerWords;
     }
   } else {
-    const integerPart = Math.floor(amountWithTaxSum);
-    const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
-    const integerWords = toWords(integerPart);
-    const centsWords = decimalPart > 0 ? toWords(decimalPart) + ' cents' : '';
-    totalDueInWords = centsWords ? `${integerWords} and ${centsWords}` : integerWords;
+    if (currentLocale === 'bg') {
+      try {
+        totalDueInWords = String(
+          nums2wordsBG.currency(amountWithTaxSum.toFixed(2), {
+            labelBig: 'евро',
+            labelSmall: 'евро цента',
+          })
+        );
+      } catch {
+        totalDueInWords = '';
+      }
+    } else {
+      const integerPart = Math.floor(amountWithTaxSum);
+      const decimalPart = Math.round((amountWithTaxSum - integerPart) * 100);
+      const integerWords = toWords(integerPart);
+      const centsWords = decimalPart > 0 ? toWords(decimalPart) + ' cents' : '';
+      totalDueInWords = centsWords ? `${integerWords} and ${centsWords}` : integerWords;
+    }
   }
 
   // Localized labels
@@ -266,19 +299,28 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, c
                   <div><b>Recipient:</b> Webrush Studio</div>
                 </div>
                 {pdfBlobUrl && (
-                  <Button
-                    asChild
-                    className="download-btn w-full mt-3"
-                    disabled={isGenerating}
-                  >
-                    <a
-                      href={pdfBlobUrl}
-                      download={`Invoice-${invoiceNumber}.pdf`}
-                      tabIndex={isGenerating ? -1 : 0}
+                  <>
+                    <Button
+                      asChild
+                      className="download-btn w-full mt-3"
+                      disabled={isGenerating}
                     >
-                      {isGenerating ? 'Generating PDF...' : 'Download as PDF'}
-                    </a>
-                  </Button>
+                      <a
+                        href={pdfBlobUrl}
+                        download={`Invoice-${invoiceNumber}.pdf`}
+                        tabIndex={isGenerating ? -1 : 0}
+                      >
+                        {isGenerating ? 'Generating PDF...' : 'Download as PDF'}
+                      </a>
+                    </Button>
+                    <Button
+                      onClick={handlePrintPdf}
+                      className="w-full mt-2 bg-[#192442] hover:bg-[#11182b] font-semibold"
+                      disabled={isGenerating}
+                    >
+                      {intl.formatMessage({ id: 'printPdf' })}
+                    </Button>
+                  </>
                 )}
               </CardContent>
             </Card>
@@ -298,3 +340,5 @@ const InvoiceClient: React.FC<InvoiceClientProps> = ({ invoice, lines, client, c
 };
 
 export default InvoiceClient; 
+
+declare module 'nums2words-bg'; 

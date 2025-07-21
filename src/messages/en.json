@@ -24,5 +24,6 @@
     "bankDetails": "OBB: IBAN12344BG84UBBS80021080174450",
     "reg": "Reg #:",
     "originalLabel": "Original",
+    "printPdf": "Print PDF",
     "bgnConversionLine": "Price in Euro (1 € = 1.95583 BGN): {euroPrice} €"
 }
