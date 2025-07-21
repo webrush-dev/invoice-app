@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 32,
     fontFamily: 'Inter',
-    fontSize: 16,
+    fontSize: 12,
     color: '#192442',
     backgroundColor: '#fff',
     borderRadius: 18,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   invoiceTitle: {
     fontFamily: 'Inter',
-    fontSize: 32,
+    fontSize: 18,
     fontWeight: 700,
     color: '#192442',
     marginBottom: 2,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   originalLabel: {
     fontFamily: 'Inter',
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: 500,
     marginLeft: 40,
     whiteSpace: 'nowrap',
@@ -160,13 +160,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontWeight: 600,
     color: '#192442',
-    fontSize: 16,
+    fontSize: 12,
     marginBottom: 2,
     letterSpacing: 0.01,
   },
   detailsValue: {
     fontFamily: 'Inter',
-    fontSize: 16,
+    fontSize: 12,
     color: '#222',
     marginBottom: 1,
   },
@@ -192,20 +192,20 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     backgroundColor: '#192442',
     color: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    fontSize: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    fontSize: 12,
     flex: 1,
     textAlign: 'center',
     letterSpacing: 0.02,
   },
   tableCell: {
     fontFamily: 'Inter',
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     flex: 1,
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 12,
     color: '#222',
     borderRightWidth: 1,
     borderRightColor: '#e5e5e5',
@@ -247,11 +247,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     color: '#222',
     fontWeight: 500,
-    fontSize: 17,
+    fontSize: 13,
   },
   summaryTotal: {
     fontFamily: 'Inter',
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: 700,
     color: '#192442',
     letterSpacing: -0.5,
@@ -259,12 +259,12 @@ const styles = StyleSheet.create({
   },
   paymentInstructionsBubble: {
     marginTop: 40,
-    paddingVertical: 20,
-    paddingHorizontal: 24,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     backgroundColor: '#f5f6fa',
     borderRadius: 10,
     color: '#192442',
-    fontSize: 17,
+    fontSize: 13,
     fontWeight: 500,
     boxShadow: '0 1px 4px rgba(25,36,66,0.04)', // react-pdf does not support boxShadow, but keep for reference
     marginBottom: 0,
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   paymentInstructionsTitle: {
     fontFamily: 'Inter',
     fontWeight: 600,
-    fontSize: 18,
+    fontSize: 14,
     color: '#192442',
     marginBottom: 8,
   },
@@ -287,20 +287,20 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     marginRight: 8,
     color: '#192442',
-    fontSize: 16,
+    fontSize: 12,
     minWidth: 120,
   },
   paymentDetail: {
     fontFamily: 'Inter',
     color: '#222',
-    fontSize: 16,
+    fontSize: 12,
     textAlign: 'right',
     flex: 1,
     marginLeft: 24,
   },
   bankDetailsIban: {
     fontFamily: 'Inter',
-    fontSize: 13,
+    fontSize: 11,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -422,7 +422,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = (props) => {
         {/* BGN conversion line if present, below the summary row, right aligned */}
         {bgnConversionLine && (
           <View style={{ marginTop: 12, marginBottom: 12, width: '100%', alignItems: 'flex-end', display: 'flex' }}>
-            <Text style={{ fontSize: 15, color: '#666', fontStyle: 'italic', textAlign: 'right', padding: 4 }}>
+            <Text style={{ fontSize: 11, color: '#666', fontStyle: 'italic', textAlign: 'right', padding: 4 }}>
               {bgnConversionLine}
             </Text>
           </View>
